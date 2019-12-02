@@ -24,7 +24,32 @@ for fileName in os.listdir(pathToDir):
 		print(fileName)
 		txtFileName = fileName.replace(".pdf", ".txt")
 		subprocess.run(["pdftotext", "-raw", pathToDir + "/" + fileName, pathToTxtOutput + "/temp.txt"])
-		shutil.copyfile(pathToTxtOutput + "/temp.txt", pathToTxtOutput + "/" + txtFileName)
+
+		# File name
+		text = "Fichier d'origine : " + fileName + "\n"
+
+		# Title
+		text += "Titre : " + "TODO" + "\n"
+
+		# Abstract
+		text += "Abstract : "
+		isAbstract = False
+		with open(pathToTxtOutput + "/temp.txt", "r") as file:
+			for line in file:
+				if ("Introduction\n" in line or "INTRODUCTION\n" in line):
+					isAbstract = False
+					break
+				if isAbstract:
+					text += line
+				if ("Abstract" in line or "ABSTRACT" in line):
+					isAbstract = True
+
+		# Write the result to the file
+		file = open(pathToTxtOutput + "/" + txtFileName, "w")
+		file.write(text)
+		file.close()
+
+		# shutil.copyfile(pathToTxtOutput + "/temp.txt", pathToTxtOutput + "/" + txtFileName)
 
 
 # for i in range(1):
