@@ -32,10 +32,19 @@ for fileName in os.listdir(pathToDir):
 		text = "Fichier d'origine : " + fileName + "\n"
 
 		# Get title
-		text += "Titre : " + "TODO" + "\n"
+		text += "Titre : "
+		counter = 0
+		with open(pathToTxtOutput + "/temp.txt", "r") as file:
+			for line in file:
+				line = line.replace("\n", " ")
+				line = line.replace("\r", " ")
+				text += line
+				counter += 1
+				if counter == 2:
+					break
 
 		# Get abstract
-		text += "Abstract : "
+		text += "\nAbstract : "
 		isAbstract = False
 		with open(pathToTxtOutput + "/temp.txt", "r") as file:
 			for line in file:
@@ -43,8 +52,10 @@ for fileName in os.listdir(pathToDir):
 					isAbstract = False
 					break
 				if isAbstract:
-					line = line.replace("\n", "")
-					line = line.replace("\r", "")
+					line = line.replace("-\n", "")
+					line = line.replace("-\r", "")
+					line = line.replace("\n", " ")
+					line = line.replace("\r", " ")
 					text += line
 				if ("Abstract" in line or "ABSTRACT" in line):
 					isAbstract = True
