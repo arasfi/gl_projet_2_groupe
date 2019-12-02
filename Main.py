@@ -9,7 +9,7 @@ import sys
 
 # VARIABLES
 pathToDir = sys.argv[1]
-pathToTxtOutput = pathToDir + "/Txt"
+pathToTxtOutput = pathToDir + "Txt"
 
 # Delete output dir if exists
 if os.path.exists(pathToTxtOutput):
@@ -21,10 +21,11 @@ os.mkdir(pathToTxtOutput)
 # Print all pdf files in <pathToDir>
 for fileName in os.listdir(pathToDir):
 	if fileName.endswith(".pdf"):
-		fileName.replace(" ", "\ ")
+		fileNameModified = fileName.replace(" ", "\ ")
 		print(fileName)
 		txtFileName = fileName.replace(".pdf", ".txt")
-		subprocess.run(["pdftotext", "-raw", pathToDir + "/" + fileName, pathToTxtOutput + "/temp.txt"])
+		#subprocess.run(["pdftotext", "-raw", pathToDir + "/" + fileName, pathToTxtOutput + "/temp.txt"])
+		os.popen("pdftotext -raw " + pathToDir + fileNameModified + " " + pathToTxtOutput + "/temp.txt")
 
 		# File name
 		text = "Fichier d'origine : " + fileName + "\n"
@@ -49,6 +50,7 @@ for fileName in os.listdir(pathToDir):
 		file = open(pathToTxtOutput + "/" + txtFileName, "w")
 		file.write(text)
 		file.close()
+os.remove(pathToTxtOutput + "/temp.txt")
 
 		# shutil.copyfile(pathToTxtOutput + "/temp.txt", pathToTxtOutput + "/" + txtFileName)
 
