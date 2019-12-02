@@ -41,6 +41,8 @@ for fileName in os.listdir(pathToDir):
 					isAbstract = False
 					break
 				if isAbstract:
+					line = line.replace("\n", "")
+					line = line.replace("\r", "")
 					text += line
 				if ("Abstract" in line or "ABSTRACT" in line):
 					isAbstract = True
