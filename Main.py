@@ -21,6 +21,7 @@ os.mkdir(pathToTxtOutput)
 # Print all pdf files in <pathToDir>
 for fileName in os.listdir(pathToDir):
 	if fileName.endswith(".pdf"):
+		fileName.replace(" ", "\ ")
 		print(fileName)
 		txtFileName = fileName.replace(".pdf", ".txt")
 		subprocess.run(["pdftotext", "-raw", pathToDir + "/" + fileName, pathToTxtOutput + "/temp.txt"])
