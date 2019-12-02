@@ -1,3 +1,5 @@
+#Execution
+
 L'exécutable main.py recoit le nom dossier qui contient les fichiers .pdf . 
 Ensuite il parcourt ce dossier pour récupérer fichier par fichier afin de récupérer des données de la forme : 
 	- Le nom du fichier d’origine.
