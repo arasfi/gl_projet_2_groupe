@@ -8,7 +8,8 @@ import subprocess
 import sys
 import xml.etree.ElementTree as ET
 
-def CreateXmlFile():
+# A function to create the xml file with the right structure
+def CreateXmlFile(preambleString, titreString, auteurString, abstractString, biblioString):
 	# create the file structure
 	article = ET.Element('article')
 	preamble = ET.SubElement(article, 'preamble')
@@ -18,11 +19,11 @@ def CreateXmlFile():
 	biblio = ET.SubElement(article, 'biblio')
 
 	# put informations in Xml elements
-	preamble.text = 'preamble'
-	titre.text = 'titre'
-	auteur.text = 'auteur'
-	abstract.text = 'abstract'
-	biblio.text = 'biblio'
+	preamble.text = preambleString
+	titre.text = titreString
+	auteur.text = auteurString
+	abstract.text = abstractString
+	biblio.text = biblioString
 
 	# create a new XML file with the results
 	mydata = ET.tostring(article)
