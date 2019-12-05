@@ -8,35 +8,6 @@ import subprocess
 import sys
 import xml.etree.ElementTree as ET
 
-# A function to create the xml file with the right structure
-def CreateXmlFile(preambleString, titreString, auteurString, abstractString, biblioString):
-	# create the file structure
-	article = ET.Element('article')
-	preamble = ET.SubElement(article, 'preamble')
-	titre = ET.SubElement(article, 'titre')
-	auteur = ET.SubElement(article, 'auteur')
-	abstract = ET.SubElement(article, 'abstract')
-	biblio = ET.SubElement(article, 'biblio')
-
-	# put informations in Xml elements
-	preamble.text = preambleString
-	titre.text = titreString
-	auteur.text = auteurString
-	abstract.text = abstractString
-	biblio.text = biblioString
-
-	# create a new XML file with the results
-	mydata = ET.tostring(article)
-	myfile = open("article.xml", "wb")
-	myfile.write(mydata)
-
-
-
-
-
-
-
-
 
 def ResetOutputDir(pathToOutputDir):
 	# Delete output dir if exists
@@ -118,6 +89,32 @@ def WriteToTxt(pathToOutputDir, fileName, title, author, abstract, biblio):
 	file.close()
 
 
+# A function to create the xml file with the right structure
+def WriteToXml(pathToOutputDir, fileName, title, author, abstract, biblio):
+	xmlFileName = fileName.replace(".pdf", ".xml")
+
+	# create the file structure
+	articleTag = ET.Element('article')
+	preambleTag = ET.SubElement(articleTag, 'preamble')
+	titleTag = ET.SubElement(articleTag, 'titre')
+	authorTag = ET.SubElement(articleTag, 'auteur')
+	abstractTag = ET.SubElement(articleTag, 'abstract')
+	biblioTag = ET.SubElement(articleTag, 'biblio')
+
+	# put informations in Xml elements
+	preambleTag.text = fileName
+	titleTag.text = title
+	authorTag.text = author
+	abstractTag.text = abstract
+	biblioTag.text = biblio
+
+	# create a new XML file with the results
+	data = ET.tostring(articleTag)
+	file = open(pathToOutputDir + "/" + xmlFileName, "wb")
+	file.write(data)
+	file.close()
+
+
 # Write to (txt or xml) files, using all the prevous Get...() functions
 def WriteToFiles(outputType, pathToInputDir, pathToOutputDir):
 	for fileName in os.listdir(pathToInputDir):
@@ -141,7 +138,7 @@ def WriteToFiles(outputType, pathToInputDir, pathToOutputDir):
 				WriteToTxt(pathToOutputDir, fileName, title, author, abstract, biblio)
 
 			elif outputType == "xml":
-				WriteToXml(pathToInputDir, pathToOutputDir)
+				WriteToXml(pathToOutputDir, fileName, title, author, abstract, biblio)
 
 	# Delete temp.txt
 	os.remove(pathToOutputDir + "/temp.txt")
