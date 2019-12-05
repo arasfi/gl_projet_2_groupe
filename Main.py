@@ -17,19 +17,6 @@ def ResetOutputDir(pathToOutputDir):
 	os.mkdir(pathToOutputDir)
 
 
-# Write the results to a txt file
-def WriteToTxt(pathToOutputDir, fileName, title, author, abstract, biblio):
-	txtFileName = fileName.replace(".pdf", ".txt")
-
-	file = open(pathToOutputDir + "/" + txtFileName, "w")
-	file.write("Fichier d'origine : " + fileName)
-	file.write("Titre : " + title)
-	file.write("Auteur(s) : " + author)
-	file.write("Résumé : " + abstract)
-	file.write("Bibliographie : " + biblio)
-	file.close()
-
-
 # Get title and author(s)
 def GetTitleAndAuthors(pathToOutputDir):	
 	title = ""
@@ -41,12 +28,12 @@ def GetTitleAndAuthors(pathToOutputDir):
 			line = line.replace("-\r", "")
 			line = line.replace("\n", " ")
 			line = line.replace("\r", " ")
+			if ("Abstract" in line or "ABSTRACT" in line):
+				break
 			if counter < 2:		# Title
 				title += line
 			else:				# Author
 				author += line
-			if ("Abstract" in line or "ABSTRACT" in line):
-				break
 			counter += 1
 	return title, author
 
@@ -66,7 +53,7 @@ def GetAbstract(pathToOutputDir):
 				line = line.replace("\n", " ")
 				line = line.replace("\r", " ")
 				abstract += line
-			if ("Abstract" in line or "ABSTRACT" in line):
+			if "Abstract" in line or "ABSTRACT" in line:
 				isAbstract = True
 	return abstract
 
@@ -86,6 +73,19 @@ def GetBiblio(pathToOutputDir):
 			if ("References" in line or "REFERENCES" in line):
 				isBiblio = True
 	return biblio
+
+
+# Write the results to a txt file
+def WriteToTxt(pathToOutputDir, fileName, title, author, abstract, biblio):
+	txtFileName = fileName.replace(".pdf", ".txt")
+
+	file = open(pathToOutputDir + "/" + txtFileName, "w")
+	file.write("Fichier d'origine :\n" + fileName + "\n\n")
+	file.write("Titre :\n" + title + "\n\n")
+	file.write("Auteur(s) :\n" + author + "\n\n")
+	file.write("Résumé :\n" + abstract + "\n\n")
+	file.write("Bibliographie :\n" + biblio + "\n\n")
+	file.close()
 
 
 # Write to (txt or xml) files, using all the prevous Get...() functions
@@ -122,11 +122,11 @@ if __name__ == "__main__":
 
 	outputType = sys.argv[2]
 	if outputType == "-t":			# Txt generation chosen
-		pathToOutputDir = pathToDir + "/Txt"
+		pathToOutputDir = pathToInputDir + "/Txt"
 		ResetOutputDir(pathToOutputDir)
 		WriteToFiles("txt", pathToInputDir, pathToOutputDir)
 
 	elif outputType == "-x":		# Xml generation chosen
-		pathToOutputDir = pathToDir + "/Xml"
+		pathToOutputDir = pathToInputDir + "/Xml"
 		ResetOutputDir(pathToOutputDir)
 		WriteToFiles("xml", pathToInputDir, pathToOutputDir)
