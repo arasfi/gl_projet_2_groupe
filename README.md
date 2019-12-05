@@ -1,12 +1,13 @@
 # Explications
-	- L'exécutable Main.py reçoit le chemin du dossier qui contient les fichiers .pdf. 
+	- L'exécutable Main.py reçoit le chemin du dossier qui contient les fichiers .pdf ainsi que le mode de sortie (-t ou -x).  
 	- Le main est constitué de fonctions : 
 		- ResetOutputDir(pathToOutputDir) : supprimer et/ou créer le répertoire
 		- GetTitleAndAuthors(pathToOutputDir) : cette fonction récupère les 2 premières lignes du fichier, nous les considèrons comme le titre et le(s) auteur(s). 
 		- GetAbstract(pathToOutputDir) : cette fonction récupère l'abstract ou l'introduction de l'article
 		- GetBiblio(pathToOutputDir) : cette fonction récupère les références de l'articles
-		- CreateXmlFile() : cette fonction convertira les fichiers .pdf en fichiers .xml
-		- ConvertToXml() : lance la fonction CreateXmlFile 
+		- WriteToTxt() : convertie le fichier .pdf en fichier .txt
+		- WriteToXml() : convertie le fichier .pdf en fichier .xml
+		- WriteToFiles(outputType, pathToInputDir, pathToOutputDir) : cette fonction va appeler WriteToTxt ou WriteToXml en fonction de la sortie qu'on lui donne.
 	
 	- Tout d'abord nous récupérons le répertoire qui contient les pdf, il devra être passé en argument
 	- Ensuite on créer le répertoire /Txt ou seront les fichiers .txt et le répertoire /Xml ou seront les fichiers .xml
