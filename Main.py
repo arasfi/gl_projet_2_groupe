@@ -6,6 +6,35 @@ import os
 import shutil
 import subprocess
 import sys
+import xml.etree.ElementTree as ET
+
+def CreateXmlFile():
+	# create the file structure
+	article = ET.Element('article')
+	preamble = ET.SubElement(article, 'preamble')
+	titre = ET.SubElement(article, 'titre')
+	auteur = ET.SubElement(article, 'auteur')
+	abstract = ET.SubElement(article, 'abstract')
+	biblio = ET.SubElement(article, 'biblio')
+
+	# put informations in Xml elements
+	preamble.text = 'preamble'
+	titre.text = 'titre'
+	auteur.text = 'auteur'
+	abstract.text = 'abstract'
+	biblio.text = 'biblio'
+
+	# create a new XML file with the results
+	mydata = ET.tostring(article)
+	myfile = open("article.xml", "wb")
+	myfile.write(mydata)
+
+
+
+
+
+
+
 
 # VARIABLES
 pathToDir = sys.argv[1]
