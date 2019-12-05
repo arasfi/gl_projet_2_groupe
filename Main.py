@@ -17,6 +17,64 @@ def ResetOutputDir(pathToOutputDir):
 	os.mkdir(pathToOutputDir)
 
 
+# Get title and author(s)
+def GetTitleAndAuthors(pathToOutputDir):	
+	title = ""
+	author = ""
+	counter = 0
+	with open(pathToOutputDir + "/temp.txt", "r") as file:
+		for line in file:
+			line = line.replace("-\n", "")
+			line = line.replace("-\r", "")
+			line = line.replace("\n", " ")
+			line = line.replace("\r", " ")
+			if counter < 2:		# Title
+				title += line
+			else:				# Author
+				author += line
+			if ("Abstract" in line or "ABSTRACT" in line):
+				break
+			counter += 1
+	return title, author
+
+
+# Get abstract
+def GetAbstract(pathToOutputDir):
+	abstract = ""
+	isAbstract = False
+	with open(pathToOutputDir + "/temp.txt", "r") as file:
+		for line in file:
+			if ("Introduction\n" in line or "INTRODUCTION\n" in line):
+				isAbstract = False
+				break
+			if isAbstract:
+				line = line.replace("-\n", "")
+				line = line.replace("-\r", "")
+				line = line.replace("\n", " ")
+				line = line.replace("\r", " ")
+				abstract += line
+			if ("Abstract" in line or "ABSTRACT" in line):
+				isAbstract = True
+	return abstract
+
+
+# Get Biblio/References
+def GetBiblio(pathToOutputDir):
+	biblio = ""
+	isBiblio = False
+	with open(pathToOutputDir + "/temp.txt", "r") as file:
+		for line in file:
+			if isBiblio:
+				line = line.replace("-\n", "")
+				line = line.replace("-\r", "")
+				line = line.replace("\n", " ")
+				line = line.replace("\r", " ")
+				biblio += line
+			if ("References" in line or "REFERENCES" in line):
+				isBiblio = True
+	return biblio
+
+
 def ConvertToTxt(pathToOutputDir):
 	# Print all pdf files in <pathToDir>
 	for fileName in os.listdir(pathToDir):
@@ -141,6 +199,6 @@ if __name__ == "__main__":
 		ResetOutputDir(pathToTxtOutput)
 		ConvertToTxt()
 
-	else if outputType == "-x":		# Xml generation chosen
+	elif outputType == "-x":		# Xml generation chosen
 		ResetOutputDir(pathToXmlOutput)
 		ConvertToXml()
