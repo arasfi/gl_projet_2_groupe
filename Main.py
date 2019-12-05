@@ -31,7 +31,7 @@ def GetTitleAndAuthors(pathToOutputDir):
 			line = line.replace("\r", " ")
 			if ("Abstract" in line or "ABSTRACT" in line):
 				break
-			if counter < 2:		# Title
+			if counter < 3:		# Title
 				title += line
 			else:				# Author
 				author += line
@@ -39,23 +39,46 @@ def GetTitleAndAuthors(pathToOutputDir):
 	return title, author
 
 
-# Get abstract
-def GetAbstract(pathToOutputDir):
-	abstract = ""
-	isAbstract = False
+# Get abstract, introduction, body, conclusion and discussion
+def SplitFile(pathToOutputDir):
+	title, author, abstract, intro, body, conclusion, discussion, biblio = "", "", "", "", "", "", "", ""
+	isAuthor, isAbstract, isIntro, isBody, isConclusion, isDiscussion, isBiblio = False, False, False, False, False, False, False
+
 	with open(pathToOutputDir + "/temp.txt", "r") as file:
 		for line in file:
-			if ("Introduction\n" in line or "INTRODUCTION\n" in line):
-				isAbstract = False
-				break
+			if "Abstract" in line or "ABSTRACT" in line:				# Author part
+				isAuthor, isAbstract, isIntro, isBody, isConclusion, isDiscussion, isBiblio = True, False, False, False, False, False, False
+			if "Introduction\n" in line or "INTRODUCTION\n" in line:	# Abstract part
+				isAuthor, isAbstract, isIntro, isBody, isConclusion, isDiscussion, isBiblio = False, True, False, False, False, False, False
+			if line == "2\n":											# Introduction part
+				isAuthor, isAbstract, isIntro, isBody, isConclusion, isDiscussion, isBiblio = False, False, True, False, False, False, False
+			if "Conclusion\n" in line:									# Body part
+				isAuthor, isAbstract, isIntro, isBody, isConclusion, isDiscussion, isBiblio = False, False, False, True, False, False, False
+			if "Conclusion\n" in line:									# Conclusion part
+				isAuthor, isAbstract, isIntro, isBody, isConclusion, isDiscussion, isBiblio = False, False, False, False, True, False, False
+			if "Conclusion\n" in line:									# Discussion part
+				isAuthor, isAbstract, isIntro, isBody, isConclusion, isDiscussion, isBiblio = False, False, False, False, False, True, False
+			if "Conclusion\n" in line:									# Biblio part
+				isAuthor, isAbstract, isIntro, isBody, isConclusion, isDiscussion, isBiblio = False, False, False, False, False, False, True
+
+			if isAbstract or isBody or isConclusion or isDiscussion:
+			line = line.replace("-\n", "")
+			line = line.replace("-\r", "")
+			line = line.replace("\n", " ")
+			line = line.replace("\r", " ")
+
 			if isAbstract:
-				line = line.replace("-\n", "")
-				line = line.replace("-\r", "")
-				line = line.replace("\n", " ")
-				line = line.replace("\r", " ")
 				abstract += line
+			if isBody:
+				body += line
+			if isConclusion:
+				conclusion += line
+			if isDiscussion:
+				discussion += line
+
 			if "Abstract" in line or "ABSTRACT" in line:
-				isAbstract = True
+				isAbstract, isBody, isConclusion, isDiscussion = True, False, False, False
+			if 
 	return abstract
 
 
@@ -123,7 +146,7 @@ def WriteToFiles(outputType, pathToInputDir, pathToOutputDir):
 			print(fileName)
 
 			# Use pdftotext to extract the content of the pdf file to a temp.txt file
-			os.system("pdftotext -raw " + pathToInputDir + "/" + fileNameModified + " " + pathToOutputDir + "/temp.txt")
+			os.system("pdftotext " + pathToInputDir + "/" + fileNameModified + " " + pathToOutputDir + "/temp.txt")
 
 			# Get title and author(s)
 			title, author = GetTitleAndAuthors(pathToOutputDir)
