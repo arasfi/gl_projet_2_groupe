@@ -10,20 +10,21 @@ def listMenu(pathToInputDir):
             indexFiles = indexFiles + 1
     return indexFiles - 1
 
+def getListOfFilesToConvert() :
+    filesToConvertInput = input("Veuillez donner les fichiers à convertir (separés par des virgules) : ")
+    filesToConvertArray = filesToConvertInput.split(',')
+    for i in range(len(filesToConvertArray)):
+        filesToConvertArray[i] = int(filesToConvertArray[i]) - 1
+
+    listOfFilesToConvert = []
+    for i in range(numberOfFiles):
+        if i not in filesToConvertArray:
+            listOfFilesToConvert.append(False)
+        else:
+            listOfFilesToConvert.append(True)
+
+    return listOfFilesToConvert
+
+
 numberOfFiles = listMenu('Papers')
-
-
-filesToConvertInput = input("Veuillez donner les fichiers à convertir (separés par des virgules) : ")
-
-filesToConvertArray = filesToConvertInput.split(',')
-for i in range(len(filesToConvertArray)) :
-    filesToConvertArray[i] = int(filesToConvertArray[i]) - 1
-
-listOfFilesToConvert = []
-for i in range(numberOfFiles):
-    if i not in filesToConvertArray:
-        listOfFilesToConvert.append(False)
-    else:
-        listOfFilesToConvert.append(True)
-
-print(listOfFilesToConvert)
+print(getListOfFilesToConvert())
