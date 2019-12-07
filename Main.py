@@ -26,19 +26,35 @@ def SplitFile(pathToOutputDir):
 	counter = 0
 	with open(pathToOutputDir + "/temp.txt", "r") as file:
 		for line in file:
-			if counter == 3:											# Author part
+			# Author part
+			if counter == 3:
 				isTitle, isAuthor, isAbstract, isIntro, isBody, isConclusion, isDiscussion, isBiblio = False, True, False, False, False, False, False, False
-			if "Abstract" in line or "ABSTRACT" in line:				# Abstract part
+
+			# Abstract part
+			if "Abstract" in line or "ABSTRACT" in line:
 				isTitle, isAuthor, isAbstract, isIntro, isBody, isConclusion, isDiscussion, isBiblio = False, False, True, False, False, False, False, False
-			if "Introduction\n" in line or "INTRODUCTION\n" in line:	# Introduction part
+
+			# Introduction part
+			if "Introduction\n" in line or "INTRODUCTION\n" in line:
 				isTitle, isAuthor, isAbstract, isIntro, isBody, isConclusion, isDiscussion, isBiblio = False, False, False, True, False, False, False, False
-			if line == "2\n":											# Body part
+
+			# Body part
+			# line.startswith("2\n") or line.startswith("II\n") or 
+			if line.startswith("2. ") or line.startswith("II. ") or line.startswith("Corpus") or line == "2\n":
 				isTitle, isAuthor, isAbstract, isIntro, isBody, isConclusion, isDiscussion, isBiblio = False, False, False, False, True, False, False, False
-			if "Conclusion\n" in line or "CONCLUSION\n" in line:		# Conclusion part
+
+			# Conclusion part
+			#  or "CONCLUSIONS" in line
+			if "Conclusion\n" in line or "CONCLUSION\n" in line or "Conclusions"in line:
 				isTitle, isAuthor, isAbstract, isIntro, isBody, isConclusion, isDiscussion, isBiblio = False, False, False, False, False, True, False, False
-			if "Discussion\n" in line or "DISCUSSION\n" in line:		# Discussion part
+
+			# Discussion part
+			if "Discussion\n" in line or "DISCUSSION\n" in line:
 				isTitle, isAuthor, isAbstract, isIntro, isBody, isConclusion, isDiscussion, isBiblio = False, False, False, False, False, False, True, False
-			if "References\n" in line or "REFERENCES\n" in line:		# Biblio part
+
+			# Biblio part
+			# "References\n" in line or "REFERENCES\n" in line
+			if line.startswith("References\n") or line.startswith("REFERENCES\n"):
 				isTitle, isAuthor, isAbstract, isIntro, isBody, isConclusion, isDiscussion, isBiblio = False, False, False, False, False, False, False, True
 
 			line = line.replace("-\n", "")
