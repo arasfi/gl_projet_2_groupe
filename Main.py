@@ -105,7 +105,7 @@ def WriteToTxt(pathToOutputDir, fileName, title, author, abstract, intro, body, 
 
 
 # A function to create the xml file with the right structure
-def WriteToXml(pathToOutputDir, fileName, title, author, abstract, biblio):
+def WriteToXml(pathToOutputDir, fileName, title, author, abstract, intro, body, conclusion, discussion, biblio):
 	xmlFileName = fileName.replace(".pdf", ".xml")
 	print("Creating \"" + xmlFileName + "\"...")
 
@@ -115,6 +115,10 @@ def WriteToXml(pathToOutputDir, fileName, title, author, abstract, biblio):
 	titleTag = ET.SubElement(articleTag, 'titre')
 	authorTag = ET.SubElement(articleTag, 'auteur')
 	abstractTag = ET.SubElement(articleTag, 'abstract')
+	introTag = ET.SubElement(articleTag, 'intro')
+	bodyTag = ET.SubElement(articleTag, 'body')
+	conclusionTag = ET.SubElement(articleTag, 'conclusion')
+	discussionTag = ET.SubElement(articleTag, 'discussion')
 	biblioTag = ET.SubElement(articleTag, 'biblio')
 
 	# put informations in Xml elements
@@ -122,6 +126,10 @@ def WriteToXml(pathToOutputDir, fileName, title, author, abstract, biblio):
 	titleTag.text = title
 	authorTag.text = author
 	abstractTag.text = abstract
+	introTag.text = intro
+	bodyTag.text = body
+	conclusionTag.text = conclusion
+	discussionTag.text = discussion
 	biblioTag.text = biblio
 
 	# create a new XML file with the results
@@ -150,7 +158,7 @@ def WriteToFiles(outputType, pathToInputDir, pathToOutputDir, listOfFilesToConve
 					WriteToTxt(pathToOutputDir, fileName, title, author, abstract, intro, body, conclusion, discussion, biblio)
 
 				elif outputType == "xml":
-					WriteToXml(pathToOutputDir, fileName, title, author, abstract, biblio)
+					WriteToXml(pathToOutputDir, fileName, title, author, abstract, intro, body, conclusion, discussion, biblio)
 
 			fileIndex += 1
 
