@@ -40,12 +40,12 @@ def SplitFile(pathToOutputDir):
 
 			# Body part
 			# line.startswith("2\n") or line.startswith("II\n") or 
-			if line.startswith("2. ") or line.startswith("II. ") or line.startswith("Corpus") or line == "2\n":
+			if line.startswith("2. ") or line.startswith("II. ") or line.startswith("Corpus") or line == "2\n" or line == "2.\n":
 				isTitle, isAuthor, isAbstract, isIntro, isBody, isConclusion, isDiscussion, isBiblio = False, False, False, False, True, False, False, False
 
 			# Conclusion part
 			#  or "CONCLUSIONS" in line
-			if "Conclusion\n" in line or "CONCLUSION\n" in line or "Conclusions"in line:
+			if "Conclusion\n" in line or "CONCLUSION\n" in line or "Conclusions"in line or "CONCLUSIONS" in line:
 				isTitle, isAuthor, isAbstract, isIntro, isBody, isConclusion, isDiscussion, isBiblio = False, False, False, False, False, True, False, False
 
 			# Discussion part
