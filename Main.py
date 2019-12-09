@@ -171,13 +171,17 @@ def ListMenu(pathToInputDir):
 
 def GetListOfFilesToConvert(numberOfFiles) :
 	filesToConvertInput = input("\nVeuillez donner les fichiers à convertir (separés par des virgules) : ")
-	filesToConvertArray = filesToConvertInput.split(',')
-	for i in range(len(filesToConvertArray)):
-		filesToConvertArray[i] = int(filesToConvertArray[i]) - 1
+	
+	if filesToConvertInput != "*":
+		filesToConvertArray = filesToConvertInput.split(',')
+		for i in range(len(filesToConvertArray)):
+			filesToConvertArray[i] = int(filesToConvertArray[i]) - 1
 
 	listOfFilesToConvert = []
 	for i in range(numberOfFiles):
-		if i not in filesToConvertArray:
+		if filesToConvertInput == "*":
+			listOfFilesToConvert.append(True)
+		elif i not in filesToConvertArray:
 			listOfFilesToConvert.append(False)
 		else:
 			listOfFilesToConvert.append(True)
