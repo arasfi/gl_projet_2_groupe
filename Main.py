@@ -87,6 +87,7 @@ def SplitFile(pathToOutputDir):
 # Write the results to a txt file
 def WriteToTxt(pathToOutputDir, fileName, title, author, abstract, intro, body, conclusion, discussion, biblio):
 	txtFileName = fileName.replace(".pdf", ".txt")
+	print("Creating \"" + txtFileName + "\"...")
 
 	file = open(pathToOutputDir + "/" + txtFileName, "w")
 
@@ -106,6 +107,7 @@ def WriteToTxt(pathToOutputDir, fileName, title, author, abstract, intro, body, 
 # A function to create the xml file with the right structure
 def WriteToXml(pathToOutputDir, fileName, title, author, abstract, biblio):
 	xmlFileName = fileName.replace(".pdf", ".xml")
+	print("Creating \"" + xmlFileName + "\"...")
 
 	# create the file structure
 	articleTag = ET.Element('article')
@@ -130,38 +132,72 @@ def WriteToXml(pathToOutputDir, fileName, title, author, abstract, biblio):
 
 
 # Write to (txt or xml) files, using all the prevous Get...() functions
-def WriteToFiles(outputType, pathToInputDir, pathToOutputDir):
+def WriteToFiles(outputType, pathToInputDir, pathToOutputDir, listOfFilesToConvert):
+	fileIndex = 0
+	print()
 	for fileName in os.listdir(pathToInputDir):
 		if fileName.endswith(".pdf"):
-			fileNameModified = fileName.replace(" ", "\ ")
-			print(fileName)
+			if listOfFilesToConvert[fileIndex] == True:
+				fileNameModified = fileName.replace(" ", "\ ")
 
-			# Use pdftotext to extract the content of the pdf file to a temp.txt file
-			os.system("pdftotext " + pathToInputDir + "/" + fileNameModified + " " + pathToOutputDir + "/temp.txt")
+				# Use pdftotext to extract the content of the pdf file to a temp.txt file
+				os.system("pdftotext " + pathToInputDir + "/" + fileNameModified + " " + pathToOutputDir + "/temp.txt")
 
-			# Split the text into 8 different parts
-			title, author, abstract, intro, body, conclusion, discussion, biblio = SplitFile(pathToOutputDir)
+				# Split the text into 8 different parts
+				title, author, abstract, intro, body, conclusion, discussion, biblio = SplitFile(pathToOutputDir)
 
-			if outputType == "txt":
-				WriteToTxt(pathToOutputDir, fileName, title, author, abstract, intro, body, conclusion, discussion, biblio)
+				if outputType == "txt":
+					WriteToTxt(pathToOutputDir, fileName, title, author, abstract, intro, body, conclusion, discussion, biblio)
 
-			elif outputType == "xml":
-				WriteToXml(pathToOutputDir, fileName, title, author, abstract, biblio)
+				elif outputType == "xml":
+					WriteToXml(pathToOutputDir, fileName, title, author, abstract, biblio)
+
+			fileIndex += 1
 
 	# Delete temp.txt
 	os.remove(pathToOutputDir + "/temp.txt")
 
 
+def ListMenu(pathToInputDir):
+	fileIndex = 0
+	for fileName in os.listdir(pathToInputDir):
+		if fileName.endswith(".pdf"):
+			fileIndex += 1
+			fileNameModified = fileName.replace(" ", "\ ")
+			print(str(fileIndex) + " " + fileName)
+
+	return fileIndex
+
+
+def GetListOfFilesToConvert(numberOfFiles) :
+	filesToConvertInput = input("\nVeuillez donner les fichiers à convertir (separés par des virgules) : ")
+	filesToConvertArray = filesToConvertInput.split(',')
+	for i in range(len(filesToConvertArray)):
+		filesToConvertArray[i] = int(filesToConvertArray[i]) - 1
+
+	listOfFilesToConvert = []
+	for i in range(numberOfFiles):
+		if i not in filesToConvertArray:
+			listOfFilesToConvert.append(False)
+		else:
+			listOfFilesToConvert.append(True)
+
+	return listOfFilesToConvert
+
+
 if __name__ == "__main__":
 	pathToInputDir = sys.argv[1]
+
+	numberOfFiles = ListMenu(pathToInputDir)
+	listOfFilesToConvert = GetListOfFilesToConvert(numberOfFiles)
 
 	outputType = sys.argv[2]
 	if outputType == "-t":			# Txt generation chosen
 		pathToOutputDir = pathToInputDir + "/Txt"
 		ResetOutputDir(pathToOutputDir)
-		WriteToFiles("txt", pathToInputDir, pathToOutputDir)
+		WriteToFiles("txt", pathToInputDir, pathToOutputDir, listOfFilesToConvert)
 
 	elif outputType == "-x":		# Xml generation chosen
 		pathToOutputDir = pathToInputDir + "/Xml"
 		ResetOutputDir(pathToOutputDir)
-		WriteToFiles("xml", pathToInputDir, pathToOutputDir)
+		WriteToFiles("xml", pathToInputDir, pathToOutputDir, listOfFilesToConvert)
