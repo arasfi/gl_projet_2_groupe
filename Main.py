@@ -199,17 +199,19 @@ def GetListOfFilesToConvert(numberOfFiles) :
 
 if __name__ == "__main__":
 	pathToInputDir = sys.argv[1]
+	if not pathToInputDir.endswith("/"):
+		pathToInputDir += "/"
 
 	numberOfFiles = ListMenu(pathToInputDir)
 	listOfFilesToConvert = GetListOfFilesToConvert(numberOfFiles)
 
 	outputType = sys.argv[2]
 	if outputType == "-t":			# Txt generation chosen
-		pathToOutputDir = pathToInputDir + "/Txt"
+		pathToOutputDir = pathToInputDir + "Txt"
 		ResetOutputDir(pathToOutputDir)
 		WriteToFiles("txt", pathToInputDir, pathToOutputDir, listOfFilesToConvert)
 
 	elif outputType == "-x":		# Xml generation chosen
-		pathToOutputDir = pathToInputDir + "/Xml"
+		pathToOutputDir = pathToInputDir + "Xml"
 		ResetOutputDir(pathToOutputDir)
 		WriteToFiles("xml", pathToInputDir, pathToOutputDir, listOfFilesToConvert)
