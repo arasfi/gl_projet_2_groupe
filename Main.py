@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 
 # import glob
 # import io
@@ -149,7 +150,7 @@ def WriteToFiles(outputType, pathToInputDir, pathToOutputDir, listOfFilesToConve
 				fileNameModified = fileName.replace(" ", "\ ")
 
 				# Use pdftotext to extract the content of the pdf file to a temp.txt file
-				os.system("pdftotext " + pathToInputDir + "/" + fileNameModified + " " + pathToOutputDir + "/temp.txt")
+				os.system("pdftotext -enc UTF-8 " + pathToInputDir + "/" + fileNameModified + " " + pathToOutputDir + "/temp.txt")
 
 				# Split the text into 8 different parts
 				title, author, abstract, intro, body, conclusion, discussion, biblio = SplitFile(pathToOutputDir)

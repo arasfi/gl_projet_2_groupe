@@ -20,3 +20,4 @@
 
 ### Pour lancer le programme : 
 	Commande : python Main.py chemin_du_dossier_contenant_les_pdf -t|-x
+	Ou : python3 Main.py chemin_du_dossier_contenant_les_pdf -t|-x
