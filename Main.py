@@ -122,16 +122,18 @@ def WriteToXml(pathToOutputDir, fileName, title, author, abstract, intro, body, 
 	discussionTag = ET.SubElement(articleTag, 'discussion')
 	biblioTag = ET.SubElement(articleTag, 'biblio')
 
+
+	map = dict.fromkeys(range(32))
 	# put informations in Xml elements
-	preambleTag.text = fileName
-	titleTag.text = title
-	authorTag.text = author
-	abstractTag.text = abstract
-	introTag.text = intro
-	bodyTag.text = body
-	conclusionTag.text = conclusion
-	discussionTag.text = discussion
-	biblioTag.text = biblio
+	preambleTag.text = fileName.translate(map)
+	titleTag.text = title.translate(map)
+	authorTag.text = author.translate(map)
+	abstractTag.text = abstract.translate(map)
+	introTag.text = intro.translate(map)
+	bodyTag.text = body.translate(map)
+	conclusionTag.text = conclusion.translate(map)
+	discussionTag.text = discussion.translate(map)
+	biblioTag.text = biblio.translate(map)
 
 	# create a new XML file with the results
 	data = ET.tostring(articleTag)
